@@ -383,6 +383,16 @@ app.get('/', (req,res) => {
   </body></html>`);
 });
 
+// Route to get current tokens for saving to env var
+app.get('/tokens', (req, res) => {
+  const t = loadTokensSafe();
+  if (!t) return res.json({error: 'Not authenticated'});
+  res.json({
+    GMAIL_TOKENS: JSON.stringify(t),
+    instruction: 'Copy the GMAIL_TOKENS value above and paste it into Railway Variables tab'
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`NSMN Dialer Backend v4.0 on port ${PORT}`);
   if (!loadTokens()) { console.log(`Connect: http://localhost:${PORT}/auth/login`); }
